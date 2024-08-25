@@ -12,16 +12,6 @@
 
     <style>
 
-      :root {
-        --w3stan-cycle-duration: 0s; /* placeholder */
-
-        --w3stan-fading-opaque-start: 0%; /* placeholder */
-        --w3stan-fading-opaque-end: 0%; /* placeholder */
-        --w3stan-fading-fade-end: 0%; /* placeholder */
-
-        --my-var: 33%;
-      }
-
       /* remove useless layouts */
       html, body {
         width: 100%;
@@ -35,11 +25,20 @@
       }
 
 
-      .w3stan-fading {
+      img.w3stan-fading {
+        /* hack; first cycle of animation */
         visibility: hidden;
+
         position: absolute;
-        top: 0;
+
+        margin: auto;
         left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+
+        max-width: 100%;
+        max-height: 100%;
       }
 
     </style>

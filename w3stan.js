@@ -135,13 +135,12 @@
       };
 
       image.animate(anim_keyframes, anim_options);
+      image.style.setProperty("z-index", (num_res - item_idx))
 
       items.push(image);
     }
 
-    /* reverse order for correct stacked rendering */
-    let flipped_items = items.reverse();
-    for (var item of flipped_items) {
+    for (let item of items) {
       fragment.append(item);
     }
 
