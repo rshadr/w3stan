@@ -1,0 +1,67 @@
+/*
+ * w3stan CSS rules
+ *
+ * Copyright 2024 Adrien Ricciardi
+ * See LICENSE for details
+ */
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: black;
+}
+
+:root {
+  /* dummy values */
+
+  --g-w3stan-fade-duration: 0s; /* js */
+  --g-w3stan-opaque-duration: 0s; /* js */
+
+  /* combines fade-duration, opaque-duration and number of slides */
+  --g-w3stan-cycle-duration: 0s; /* js */
+
+  --g-w3stan-opaque-start-percent: 0%;
+  --g-w3stan-opaque-end-percent: calc( 100% * var(--g-w3stan-opaque-duration) / var(--g-w3stan-cycle-duration) );
+
+  --g-w3stan-fade-end-percent: calc( var(--g-w3stan-opaque-end-percent)
+   + 100% * var(--g-w3stan-fade-duration) / var(--g-w3stan-cycle-duration) );
+}
+
+
+@keyframes w3stan-fade-animation {
+
+  calc( var(--g-w3stan-opaque-start-percent) ),
+  calc( var(--g-w3stan-opaque-end-percent) ) {
+    visibility: visible;
+    opacity: 1.0;
+  }
+
+  calc( var(--g-w3stand-fade-end-percent) ) {
+    opacity: 0.0;
+  }
+
+
+  100% {
+    /* visibility: hidden; */
+  }
+
+}
+
+
+.w3stan-fade {
+  --w3stan-fade-index: 0; /* dummy */
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* visibility: hidden; */
+
+  animation-name: w3stan-fade-animation;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-duration: var(--g-w3stan-cycle-duration);
+  animation-delay: 0s; /* dummy */
+}
+
+
