@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 
+<!--
+  w3stan - HTML picture slideshow
+  Copyright 2024 Adrien Ricciardi
+  See LICENSE for details
+
+  The newest version of this widget can be found at:
+    https://github.com/rshadr/w3stan
+
+  This file was last changed 29/08/2024.
+-->
+
 
 <html>
 
@@ -8,8 +19,11 @@
     <meta charset="utf-8" />
 
     <style>
+      /*
+       * This stylesheet applies to the widget's contentDocument
+       */
 
-      /* remove useless layouts */
+      /* remove annoying artifacts */
       html, body {
         width: 100%;
         height: 100%;
@@ -22,7 +36,7 @@
         margin: 0;
       }
 
-      /* whyever you shouldn't have JS on */
+      /* for errors and noscript users */
       noscript, p {
         display: block;
         margin: auto;
@@ -30,14 +44,13 @@
       }
 
       p.w3stan-watermark {
+        /* make it always stick in the bottom right corner */
         position: absolute;
         z-index: 1000;
-
         bottom: 0;
         right: 0;
 
         padding: 2pt;
-
         font-weight: bold;
       }
 
@@ -46,14 +59,17 @@
         /* hack; first cycle of animation */
         visibility: hidden;
 
+        /* make stackable */
         position: absolute;
-
-        margin: auto;
         left: 0;
         right: 0;
         top: 0;
         bottom: 0;
 
+        /* center */
+        margin: auto;
+
+        /* fill frame best we can */
         max-width: 100%;
         max-height: 100%;
       }
@@ -61,25 +77,20 @@
     </style>
 
     <script type="module">
-      /*
-       * w3stan - HTML slide panel
-       * Copyright 2024 Adrien Ricciardi
-       * See LICENSE for details
-       */
       (async function(window, document) {
 
         function w3stan_error_not_in_frame(document) {
-          document.body.innerHTML = "<p>not in frame!</p>";
+          document.body.innerHTML = "<p>w3stan error: not in frame!</p>";
           return null;
         }
 
         function w3stan_error_invalid_listing(document) {
-          document.body.innerHTML = "<p>invalid listing!</p>";
+          document.body.innerHTML = "<p>w3stan error: invalid listing!</p>";
           return null;
         }
 
         function w3stan_error_unspecified_listing(document) {
-          document.body.innerHTML = "<p>unspecified listing!</p>";
+          document.body.innerHTML = "<p>w3stan error: unspecified listing!</p>";
           return null;
         }
 
@@ -126,8 +137,6 @@
             return (await file_list);
           })();
 
-          //return path_list;
-
           return w3stan_build_valid_resources(await path_list, origin);
         }
 
@@ -158,19 +167,22 @@
               /* -> fade-in */
               offset: 0.0,
               visibility: "visible",
-              opacity: 0.0
+              opacity: 0.0,
+              filter: "grayscale(90%) blur(8px)"
             },
 
             {
               /* fade-in -> opaque */
               offset: opaque_start_offset,
-              opacity: 1.0
+              opacity: 1.0,
+              filter: "none"
             },
 
             {
               /* opaque -> fade-out */
               offset: opaque_end_offset,
               opacity: 1.0,
+              filter: "none"
             },
 
             {
@@ -178,6 +190,7 @@
               offset: fade_out_end_offset,
               opacity: 0.0,
               visibility: "hidden",
+              filter: "grayscale(90%) blur(8px)"
             }
 
           ];
@@ -193,9 +206,9 @@
             let delay = (item_idx * (FADE_DURATION + OPAQUE_DURATION));
 
             let anim_options = {
-              delay: (delay * 1000.0),
+              delay: (delay * 1000.0), /* s -> ms */
               direction: "normal",
-              duration: (cycle_duration * 1000.0),
+              duration: (cycle_duration * 1000.0), /* s -> ms */
               easing: "linear",
               iterations: Infinity
             };
@@ -234,7 +247,7 @@
           }
 
           /*
-           * Check what resources accessible to begin with.
+           * Check what resources are accessible to begin with.
            */
           let res_list = await w3stan_read_listing(listing_url, origin);
           if (res_list === null) {
@@ -293,7 +306,9 @@
 
         async function main(window, document) {
           if ( w3stan_connect(window, document) ) {
-            /* initial refresh */
+            /*
+             * We succeeded in connecting the iframe, now run an initial refresh
+             */
             var frame = window.frameElement;
             let origin = window.location.origin;
             let listing = frame.getAttribute("data-w3stan-listing") || "";
