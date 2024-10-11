@@ -8,7 +8,7 @@
   The newest version of this widget can be found at:
     https://github.com/rshadr/w3stan
 
-  This file was last changed 29/08/2024.
+  This file was last changed 11/10/2024.
 -->
 
 
@@ -29,7 +29,7 @@
         height: 100%;
         overflow: hidden;
 
-        background-color: black;
+        background-color: transparent;
       }
 
       * {
@@ -40,7 +40,7 @@
       noscript, p {
         display: block;
         margin: auto;
-        color: white;
+        color: red;
       }
 
       p.w3stan-watermark {
@@ -219,10 +219,13 @@
             items.push(image);
           }
 
-          var p = document.createElement("p");
-          p.classList.add("w3stan-watermark");
-          p.textContent = "w3stan";
-          items.push(p);
+          if (window.location.host != "rshadr.neocities.org"
+           && window.location.host != "localhost:1337") {
+            var p = document.createElement("p");
+            p.classList.add("w3stan-watermark");
+            p.textContent = "w3stan";
+            items.push(p);
+          }
 
 
           for (let item of items) {
